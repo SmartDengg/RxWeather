@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_item_header_root_view"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="@dimen/material_2dp"
+    app:cardElevation="@dimen/material_2dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    >
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/material_120dp"
+        >
+
+      <ImageView
+          android:id="@+id/list_item_header_temp_iv"
+          android:layout_width="@dimen/material_80dp"
+          android:layout_height="@dimen/material_80dp"
+          android:layout_centerVertical="true"
+          android:layout_marginRight="@dimen/material_24dp"
+          android:layout_alignParentRight="true"
+          />
+
+      <LinearLayout
+          android:layout_toLeftOf="@id/list_item_header_temp_iv"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/material_100dp"
+          android:layout_centerVertical="true"
+          android:orientation="vertical"
+          >
+        <TextView
+            android:id="@+id/list_item_header_location_tv"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:padding="@dimen/material_8dp"
+            android:gravity="start|center_vertical"
+            android:textSize="@dimen/material_18sp"
+            android:textColor="@android:color/black"
+            />
+        <TextView
+            android:id="@+id/list_item_header_temp_tv"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:padding="@dimen/material_8dp"
+            android:gravity="start|center_vertical"
+            android:textSize="@dimen/material_16sp"
+            android:textColor="@android:color/black"
+            />
+
+      </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/list_item_header_suggest_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/material_8dp"
+        android:gravity="start|center_vertical"
+        android:textSize="@dimen/material_16sp"
+        android:textColor="@android:color/black"
+        />
+
+  </LinearLayout>
+
+</android.support.v7.widget.CardView>

@@ -1,0 +1,13 @@
+<resources>
+  <string name="app_name">RxWeather</string>
+
+
+  <string name="service_exception_message">服务器出错啦</string>
+  <string name="timeout_exception_message">链接超时</string>
+  <string name="six_word_exception_message">网络链接失败</string>
+  <string name="unknow_city_exception_message">城市信息错误</string>
+
+  <string name="bottom_bar_forecast">Forecast</string>
+  <string name="bottom_bar_search">Search</string>
+  <string name="hint">请输入城市，例如，北京，beijing</string>
+</resources>

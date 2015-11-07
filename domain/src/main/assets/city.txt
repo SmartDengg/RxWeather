@@ -1,0 +1,19 @@
+{
+  "citise":
+  [
+    
+    {"_id":CN101090501,"name":"Tangshan","country":"CN","coord":{"lon":119.066383,"lat":32.05389}},
+
+    {"_id":CN101090101,"name":"Shijiazhuang","country":"CN","coord":{"lon":113.116943,"lat":38.167221}},
+
+    {"_id":CN101090901,"name":"Xingtai","country":"CN","coord":{"lon":114.494171,"lat":37.063061}},
+
+    {"_id":CN101210101,"name":"Hangzhou","country":"CN","coord":{"lon":120.161423,"lat":30.29365}},
+
+    {"_id":CN101020100,"name":"Shanghai","country":"CN","coord":{"lon":121.458061,"lat":31.222219}},
+
+    {"_id":CN101120201,"name":"Qingdao","country":"CN","coord":{"lon":120.371941,"lat":36.09861}}
+
+  ]
+
+}

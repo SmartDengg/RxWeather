@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_bar_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/material_48dp"
+    android:layout_alignParentBottom="true"
+    android:background="@android:color/white"
+    >
+
+  <!--天气预报-->
+  <TextView
+      android:id="@+id/bottom_bar_forecast_tv"
+      android:text="@string/bottom_bar_forecast"
+      style="@style/bottom_bar_text_style"
+      />
+
+  <ImageView
+      android:layout_width="@dimen/material_1dp"
+      android:layout_height="@dimen/material_32dp"
+      android:layout_gravity="center"
+      android:background="@android:color/black"
+      />
+
+  <!--介绍-->
+  <TextView
+      android:id="@+id/bottom_bar_search_tv"
+      android:text="@string/bottom_bar_search"
+      style="@style/bottom_bar_text_style"/>
+</LinearLayout>

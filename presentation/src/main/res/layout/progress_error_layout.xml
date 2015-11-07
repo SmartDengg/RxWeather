@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/progress_error_layout_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background_color"
+    >
+
+  <TextView
+      android:id="@+id/progress_error_tv"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerInParent="true"
+      android:textSize="@dimen/material_13sp"
+      android:gravity="center"
+      />
+
+  <Button
+      android:id="@+id/progress_error_btn"
+      android:layout_below="@id/progress_error_tv"
+      android:layout_width="@dimen/material_80dp"
+      android:layout_height="@dimen/material_32dp"
+      android:layout_marginTop="@dimen/material_32dp"
+      android:layout_centerHorizontal="true"
+      android:gravity="center"
+      android:textSize="@dimen/material_16sp"
+      android:text="重试"
+      android:background="@drawable/selector_item"
+      />
+
+
+</RelativeLayout>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/detail_layout_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background_color"
+    >
+
+  <android.support.design.widget.CoordinatorLayout
+      android:id="@+id/detail_layout_container"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/detail_layout_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true"
+        android:background="@android:color/transparent"
+        >
+
+      <android.support.design.widget.CollapsingToolbarLayout
+          android:id="@+id/detail_layout_collapsing_toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          app:contentScrim="@android:color/white"
+          app:layout_scrollFlags="scroll|exitUntilCollapsed"
+          app:expandedTitleMarginStart="@dimen/material_16dp"
+          app:collapsedTitleGravity="center"
+          >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_collapseMode="parallax"
+            app:layout_collapseParallaxMultiplier="0.6"
+            >
+
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              >
+
+            <ImageView
+                android:id="@+id/detail_layout_weather_iv"
+                android:layout_width="@dimen/material_120dp"
+                android:layout_height="@dimen/material_120dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="top"
+                />
+
+            <TextView
+                android:id="@+id/detail_layout_weather_tv"
+                android:layout_toLeftOf="@id/detail_layout_weather_iv"
+                android:layout_alignTop="@id/detail_layout_weather_iv"
+                android:layout_alignBottom="@id/detail_layout_weather_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/material_40sp"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                />
+          </RelativeLayout>
+
+          <TextView
+              android:id="@+id/detail_layout_suggest_tv"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="@dimen/material_8dp"
+              android:gravity="start|center_vertical"
+              android:textSize="@dimen/material_16sp"
+              android:textColor="@android:color/black"
+              />
+        </LinearLayout>
+
+      </android.support.design.widget.CollapsingToolbarLayout>
+
+      <android.support.v7.widget.Toolbar
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/material_0dp"
+          >
+      </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/detail_layout_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/material_8dp"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
+
+
+    <com.joker.rxweather.ui.ForkView
+        android:id="@+id/detail_layout_fv"
+        android:layout_width="@dimen/material_48dp"
+        android:layout_height="@dimen/material_48dp"
+        android:layout_marginRight="@dimen/material_24dp"
+        android:gravity="center"
+        android:text="Code"
+        android:textColor="@android:color/white"
+        android:background="@drawable/selector_round_item"
+        app:layout_anchor="@id/detail_layout_app_bar"
+        app:layout_anchorGravity="end"
+        />
+
+  </android.support.design.widget.CoordinatorLayout>
+
+  <ImageView
+      android:id="@+id/detail_layout_anim_iv"
+      android:layout_width="@dimen/material_120dp"
+      android:layout_height="@dimen/material_120dp"
+      android:visibility="gone"
+      />
+
+</FrameLayout>

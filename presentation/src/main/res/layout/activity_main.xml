@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_layout_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.activity.BaseActivity">
+
+  <include layout="@layout/toolbar_layout"/>
+
+  <com.joker.rxweather.ui.widget.RevealFrameLayout
+      android:id="@+id/list_layout_reveal_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginTop="?attr/actionBarSize"
+      android:layout_marginBottom="@dimen/material_48dp"
+      >
+
+    <com.joker.rxweather.ui.ProgressLayout
+        android:id="@+id/list_layout_pl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        >
+
+      <android.support.v4.widget.SwipeRefreshLayout
+          android:id="@+id/list_layout_srl"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_layout_rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/material_16dp"
+            android:paddingBottom="@dimen/material_16dp"
+            android:clipToPadding="false"
+            android:background="@color/primary_background_color"
+            />
+      </android.support.v4.widget.SwipeRefreshLayout>
+    </com.joker.rxweather.ui.ProgressLayout>
+  </com.joker.rxweather.ui.widget.RevealFrameLayout>
+
+  <include layout="@layout/bottom_bar_layout"/>
+
+</RelativeLayout>

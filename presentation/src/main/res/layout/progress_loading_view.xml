@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loadingStateRelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_background_color"
+    >
+
+  <ProgressBar
+      android:id="@+id/progress_loading_tv"
+      android:layout_width="@dimen/material_48dp"
+      android:layout_height="@dimen/material_48dp"
+      android:layout_centerInParent="true"
+      android:indeterminate="true"
+      android:indeterminateBehavior="cycle"
+      />
+
+  <TextView
+      android:layout_below="@id/progress_loading_tv"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/material_32dp"
+      android:layout_centerHorizontal="true"
+      android:text="加载中...."
+      android:textColor="@android:color/black"
+      android:textSize="@dimen/material_16sp"
+      />
+
+</RelativeLayout>
