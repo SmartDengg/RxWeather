@@ -18,6 +18,7 @@ public class RxBus {
   private RxBus() {
     rxStandardBus = new SerializedSubject<>(PublishSubject.create());
     rxStickBus = new SerializedSubject<>(BehaviorSubject.create());
+
   }
 
   private static class SingletonHolder {

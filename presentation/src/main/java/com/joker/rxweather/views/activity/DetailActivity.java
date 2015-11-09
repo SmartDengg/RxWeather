@@ -30,7 +30,7 @@ import com.joker.rxweather.MyApplication;
 import com.joker.rxweather.R;
 import com.joker.rxweather.adapter.DetailAdapter;
 import com.joker.rxweather.common.Constants;
-import com.joker.rxweather.common.rx.rxBus.RxBus;
+import com.joker.rxweather.common.rx.rxbus.RxBus;
 import com.joker.rxweather.common.util.DensityUtil;
 import com.joker.rxweather.model.entities.ForecastWeatherEntity;
 import com.joker.rxweather.model.entities.MainEntity;
