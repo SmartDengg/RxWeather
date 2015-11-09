@@ -101,3 +101,8 @@
 - [Architecting Android…The clean way?](http://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/) - Fernando Cejas
 
 - [Architecting Android…The evolution](http://fernandocejas.com/2015/07/18/architecting-android-the-evolution/) - Fernando Cejas
+
+- [What is all this Clean Architecture jibber-jabber about? - Part 1](http://pguardiola.com/blog/clean-architecture-part-1/) - Pablo Guardiola
+
+- [What is all this Clean Architecture jibber-jabber about? - Part 2](http://pguardiola.com/blog/clean-architecture-part-2/) - Pablo Guardiola 
+
