@@ -1,4 +1,4 @@
-package com.joker.rxweather.model.entity;
+package com.joker.rxweather.model.entities;
 
 import java.io.Serializable;
 

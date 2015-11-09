@@ -1,4 +1,4 @@
-package com.joker.rxweather.model.entity;
+package com.joker.rxweather.model.entities;
 
 /**
  * Created by Joker on 2015/10/31.

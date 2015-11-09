@@ -1,4 +1,4 @@
-package com.joker.rxweather.model.entity;
+package com.joker.rxweather.model.entities;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,20 +10,20 @@ import java.util.List;
 public class RequestCitiesEntity {
 
     /*{
-        "citise": [
+        "cities": [
             {
-                "_id": 1797929,
-                "name": "Qingdao",
+                "_id": CN101090501,
+                "name": "Tangshan",
                 "country": "CN",
                 "coord": {
-                    "lon": 120.371941,
-                    "lat": 36.09861
+                    "lon": 119.066383,
+                    "lat": 32.05389
                 }
             }
         ]
     }*/
 
-  @Expose @SerializedName("citise") private List<RequestCity> requestCityList;
+  @Expose @SerializedName("cities") private List<RequestCity> requestCityList;
 
   public List<RequestCity> getRequestCityList() {
     return requestCityList;

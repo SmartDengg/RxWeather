@@ -1,4 +1,4 @@
-package com.joker.rxweather.model.entity;
+package com.joker.rxweather.model.entities;
 
 import java.io.Serializable;
 
@@ -16,5 +16,13 @@ public class SearchEntity implements Serializable {
     this.currentTemp = currentTemp;
     this.weatherText = weatherText;
     this.weatherCode = weatherCode;
+  }
+
+  @Override public String toString() {
+    return "SearchEntity{" +
+        "currentTemp='" + currentTemp + '\'' +
+        ", weatherText='" + weatherText + '\'' +
+        ", weatherCode='" + weatherCode + '\'' +
+        '}';
   }
 }
