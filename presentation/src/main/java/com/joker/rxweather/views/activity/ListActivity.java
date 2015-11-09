@@ -26,7 +26,7 @@ import com.joker.rxweather.common.Constants;
 import com.joker.rxweather.common.event.FinishActEvent;
 import com.joker.rxweather.common.rx.rxAndroid.SimpleObserver;
 import com.joker.rxweather.common.rx.rxbus.RxBus;
-import com.joker.rxweather.common.util.Utils;
+import com.joker.rxweather.common.Utils;
 import com.joker.rxweather.model.entities.MainEntity;
 import com.joker.rxweather.presenter.ListPresenter;
 import com.joker.rxweather.presenter.ListPresenterImp;

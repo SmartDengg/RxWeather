@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joker.rxweather.R;
 import com.joker.rxweather.common.Constants;
-import com.joker.rxweather.common.util.Utils;
+import com.joker.rxweather.common.Utils;
 import com.joker.rxweather.model.entities.ForecastWeatherEntity;
 import java.util.List;
 import rx.Observer;

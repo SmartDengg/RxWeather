@@ -28,7 +28,7 @@ import com.joker.rxweather.common.event.FinishActEvent;
 import com.joker.rxweather.common.rx.rxAndroid.SimpleObserver;
 import com.joker.rxweather.common.rx.rxAndroid.schedulers.AndroidSchedulers;
 import com.joker.rxweather.common.rx.rxbus.RxBus;
-import com.joker.rxweather.common.util.Utils;
+import com.joker.rxweather.common.Utils;
 import com.joker.rxweather.model.entities.SearchEntity;
 import com.joker.rxweather.presenter.SearchPresenter;
 import com.joker.rxweather.presenter.SearchPresenterImp;

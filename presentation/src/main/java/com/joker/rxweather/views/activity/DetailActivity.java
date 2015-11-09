@@ -31,7 +31,7 @@ import com.joker.rxweather.R;
 import com.joker.rxweather.adapter.DetailAdapter;
 import com.joker.rxweather.common.Constants;
 import com.joker.rxweather.common.rx.rxbus.RxBus;
-import com.joker.rxweather.common.util.DensityUtil;
+import com.joker.rxweather.common.Utils;
 import com.joker.rxweather.model.entities.ForecastWeatherEntity;
 import com.joker.rxweather.model.entities.MainEntity;
 import com.joker.rxweather.model.entities.WeatherEntity;
@@ -205,7 +205,7 @@ public class DetailActivity extends BaseActivity {
 
     weatherIv.getGlobalVisibleRect(finalBounds);
     finalBounds.offset(-globalOffset.x, -globalOffset.y);
-    scale = DensityUtil.calculateScale(startBounds, finalBounds);
+    scale = Utils.calculateScale(startBounds, finalBounds);
 
     this.animIv.setVisibility(View.VISIBLE);
     this.animIv.setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -302,7 +302,7 @@ public class DetailActivity extends BaseActivity {
       DetailActivity.this.animatorSet = set;
     } else {
       ViewCompat.animate(rootView)
-          .translationY(DensityUtil.getScreenHeight(DetailActivity.this))
+          .translationY(Utils.getScreenHeight(DetailActivity.this))
           .setDuration(Constants.MILLISECONDS_300)
           .setInterpolator(new DecelerateInterpolator())
           .withLayer()
