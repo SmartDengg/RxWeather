@@ -12,8 +12,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.joker.rxweather.common.Constants;
 import com.joker.rxweather.common.rx.rxAndroid.SchedulersCompat;
-import com.joker.rxweather.model.entity.AddressEntity;
-import com.joker.rxweather.model.entity.RequestCitiesEntity;
+import com.joker.rxweather.model.entities.AddressEntity;
+import com.joker.rxweather.model.entities.RequestCitiesEntity;
 import com.joker.rxweather.model.service.ServiceRest;
 import com.rxweather.domain.LocationListenerAdapter;
 import java.io.IOException;
@@ -88,6 +88,8 @@ public class PrepareCase extends UseCase<SparseArray> {
               subscriber.onNext(location);
               subscriber.onCompleted();
             }
+            locationManager.removeUpdates(this);
+            handlerThread.getLooper().quit();
           }
         };
 

@@ -1,8 +1,8 @@
 package com.rxweather.domain.usercase;
 
 import android.util.Log;
-import com.joker.rxweather.model.entity.AddressEntity;
-import com.joker.rxweather.model.entity.SearchEntity;
+import com.joker.rxweather.model.entities.AddressEntity;
+import com.joker.rxweather.model.entities.SearchEntity;
 import com.joker.rxweather.model.service.ServiceRest;
 import rx.Observable;
 import rx.functions.Func0;

@@ -1,5 +1,5 @@
 {
-  "citise":
+  "cities":
   [
     
     {"_id":CN101090501,"name":"Tangshan","country":"CN","coord":{"lon":119.066383,"lat":32.05389}},

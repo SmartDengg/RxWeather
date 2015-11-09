@@ -1,8 +1,8 @@
 package com.rxweather.domain.usercase;
 
-import com.joker.rxweather.model.entity.AddressEntity;
-import com.joker.rxweather.model.entity.RequestCitiesEntity;
-import com.joker.rxweather.model.entity.MainEntity;
+import com.joker.rxweather.model.entities.AddressEntity;
+import com.joker.rxweather.model.entities.RequestCitiesEntity;
+import com.joker.rxweather.model.entities.MainEntity;
 import com.joker.rxweather.model.service.ServiceRest;
 import java.util.List;
 import rx.Observable;

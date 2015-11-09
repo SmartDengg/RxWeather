@@ -32,5 +32,5 @@ public abstract class UseCase<T> {
     }
   }
 
-  @CheckResult protected abstract Observable<T> interactor();
+  @CheckResult  protected abstract Observable<T> interactor();
 }
