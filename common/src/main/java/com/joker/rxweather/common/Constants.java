@@ -12,7 +12,7 @@ public class Constants {
   public static final String FORECAST_BASE_URL = "https://api.heweather.com/x3";
   public static final String ICON_URL = "http://files.heweather.com/cond_icon/";
 
-  public static final String J_URL = "http://www.jianshu.com/users/df40282480b4/latest_articles";
+  public static final String J_URL = "https://github.com/SmartDengg/RxWeather";
 
   public static final int LOCATION_TAG = 0;
   public static final int FORECAST_TAG = 1;
