@@ -30,19 +30,19 @@ import com.joker.rxweather.MyApplication;
 import com.joker.rxweather.R;
 import com.joker.rxweather.adapter.DetailAdapter;
 import com.joker.rxweather.common.Constants;
-import com.joker.rxweather.common.rx.rxbus.RxBus;
+import com.joker.rxweather.common.rx.rxBus.RxBus;
 import com.joker.rxweather.common.util.DensityUtil;
-import com.joker.rxweather.model.entity.ForecastWeatherEntity;
-import com.joker.rxweather.model.entity.MainEntity;
-import com.joker.rxweather.model.entity.WeatherEntity;
+import com.joker.rxweather.model.entities.ForecastWeatherEntity;
+import com.joker.rxweather.model.entities.MainEntity;
+import com.joker.rxweather.model.entities.WeatherEntity;
 import com.joker.rxweather.ui.ForkView;
 import com.joker.rxweather.ui.InsertDecoration;
 import com.trello.rxlifecycle.ActivityEvent;
 import java.util.List;
 import rx.Observable;
-import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Joker on 2015/11/3.
@@ -78,7 +78,7 @@ public class DetailActivity extends BaseActivity {
   private List<ForecastWeatherEntity> forecastWeatherEntities;
   private DetailAdapter detailAdapter;
 
-  private Subscription subscribe;
+  private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
   private RxBus rxBus;
 
@@ -113,7 +113,7 @@ public class DetailActivity extends BaseActivity {
 
   private void getData() {
 
-    subscribe =
+    this.compositeSubscription.add(
         MyApplication.get()
             .getRxBus()
             .toStickObservable()
@@ -132,13 +132,12 @@ public class DetailActivity extends BaseActivity {
                 weatherEntity = mainEntity.getWeatherEntity();
                 forecastWeatherEntities = mainEntity.getForecastWeatherEntityList();
               }
-            });
+            }));
   }
 
   @Override protected void initView(Bundle savedInstanceState) {
 
     DetailActivity.this.setupAnimIv();
-
     DetailActivity.this.setupAdapter();
 
     if (savedInstanceState == null) {
@@ -163,7 +162,9 @@ public class DetailActivity extends BaseActivity {
       ViewCompat.setTranslationY(animIv, finalBounds.top);
 
       DetailActivity.this.initData();
-      Observable.just(forecastWeatherEntities).subscribe(detailAdapter);
+
+      this.compositeSubscription.add(
+          Observable.just(forecastWeatherEntities).subscribe(detailAdapter));
     }
   }
 
@@ -260,7 +261,8 @@ public class DetailActivity extends BaseActivity {
         .diskCacheStrategy(DiskCacheStrategy.RESULT)
         .into(weatherIv);
 
-    Observable.just(forecastWeatherEntities).subscribe(detailAdapter);
+    this.compositeSubscription.add(
+        Observable.just(forecastWeatherEntities).subscribe(detailAdapter));
   }
 
   @Override protected void exit() {
@@ -321,14 +323,14 @@ public class DetailActivity extends BaseActivity {
     Uri content_url = Uri.parse(Constants.J_URL);
     intent.setData(content_url);
     if (intent.resolveActivity(getPackageManager()) != null) {
-      startActivity(intent);
+      DetailActivity.this.startActivity(intent);
     }
   }
 
   @Override protected void onDestroy() {
+    if (this.compositeSubscription.hasSubscriptions()) this.compositeSubscription.clear();
     super.onDestroy();
 
     if (isFinishing()) DetailActivity.orientation = -1;
-    if (subscribe != null && !subscribe.isUnsubscribed()) subscribe.unsubscribe();
   }
 }

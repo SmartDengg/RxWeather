@@ -17,8 +17,8 @@ import com.joker.rxweather.R;
 import com.joker.rxweather.common.Constants;
 import com.joker.rxweather.common.rx.rxAndroid.schedulers.AndroidSchedulers;
 import com.joker.rxweather.common.util.Utils;
-import com.joker.rxweather.model.entity.MainEntity;
-import com.joker.rxweather.model.entity.WeatherEntity;
+import com.joker.rxweather.model.entities.MainEntity;
+import com.joker.rxweather.model.entities.WeatherEntity;
 import com.joker.rxweather.views.activity.BaseActivity;
 import com.trello.rxlifecycle.ActivityEvent;
 import java.util.List;
@@ -29,7 +29,7 @@ import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 
 /**
- * Created by Administrator on 2015/11/3.
+ * Created by Joker on 2015/11/3.
  */
 public class ForecastAdapter extends RecyclerView.Adapter implements Observer<List<MainEntity>> {
 

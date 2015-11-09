@@ -5,12 +5,12 @@ import android.content.res.AssetManager;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
+import com.fernandocejas.frodo.annotation.RxLogSubscriber;
 import com.joker.rxweather.common.Constants;
-import com.joker.rxweather.common.rx.rxAndroid.SimpleObserver;
-import com.joker.rxweather.exception.Exceptions;
-import com.joker.rxweather.model.entity.AddressEntity;
-import com.joker.rxweather.model.entity.MainEntity;
-import com.joker.rxweather.model.entity.RequestCitiesEntity;
+import com.joker.rxweather.exception.ErrorHanding;
+import com.joker.rxweather.model.entities.AddressEntity;
+import com.joker.rxweather.model.entities.MainEntity;
+import com.joker.rxweather.model.entities.RequestCitiesEntity;
 import com.joker.rxweather.views.ListView;
 import com.rxweather.domain.usercase.ListUseCase;
 import com.rxweather.domain.usercase.PrepareCase;
@@ -18,7 +18,7 @@ import com.rxweather.domain.usercase.UseCase;
 import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
-import rx.Observer;
+import rx.Subscriber;
 
 /**
  * Created by Joker on 2015/10/29.
@@ -72,14 +72,15 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
     this.listView.showError(messageId);
   }
 
-  private final class PrepareSubscriber implements Observer<SparseArray> {
+  /*准备工作Subscriber，位置，城市列表等*/
+  @RxLogSubscriber private final class PrepareSubscriber extends Subscriber<SparseArray> {
 
     @Override public void onCompleted() {
       ListPresenterImp.this.listUseCase.subscribe(new ListSubscriber());
     }
 
     @Override public void onError(Throwable e) {
-      ListPresenterImp.this.showError(Exceptions.propagate(e));
+      ListPresenterImp.this.showError(ErrorHanding.propagate(e));
     }
 
     @Override public void onNext(SparseArray sparseArray) {
@@ -90,14 +91,15 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
     }
   }
 
-  private final class ListSubscriber extends SimpleObserver<List<MainEntity>> {
+  /*城市天气预报表*/
+  @RxLogSubscriber private final class ListSubscriber extends Subscriber<List<MainEntity>> {
 
     @Override public void onCompleted() {
       ListPresenterImp.this.listView.showContent();
     }
 
     @Override public void onError(Throwable e) {
-      ListPresenterImp.this.showError(Exceptions.propagate(e));
+      ListPresenterImp.this.showError(ErrorHanding.propagate(e));
     }
 
     @Override public void onNext(List<MainEntity> mainEntities) {

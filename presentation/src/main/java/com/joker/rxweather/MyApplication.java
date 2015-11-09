@@ -2,7 +2,7 @@ package com.joker.rxweather;
 
 import android.app.Application;
 import android.os.StrictMode;
-import com.joker.rxweather.common.rx.rxbus.RxBus;
+import com.joker.rxweather.common.rx.rxBus.RxBus;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 

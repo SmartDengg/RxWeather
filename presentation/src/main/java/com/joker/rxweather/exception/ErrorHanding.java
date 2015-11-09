@@ -22,11 +22,11 @@ import com.joker.rxweather.model.service.exception.WebServiceException;
 import java.util.concurrent.TimeoutException;
 import retrofit.RetrofitError;
 
-public class Exceptions {
+public class ErrorHanding {
 
-  private static final String TAG = Exceptions.class.getSimpleName();
+  private static final String TAG = ErrorHanding.class.getSimpleName();
 
-  private Exceptions() {
+  private ErrorHanding() {
     /*never invoked*/
   }
 

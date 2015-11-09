@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -25,9 +24,10 @@ import com.joker.rxweather.R;
 import com.joker.rxweather.adapter.ForecastAdapter;
 import com.joker.rxweather.common.Constants;
 import com.joker.rxweather.common.event.FinishActEvent;
-import com.joker.rxweather.common.rx.rxbus.RxBus;
+import com.joker.rxweather.common.rx.rxAndroid.SimpleObserver;
+import com.joker.rxweather.common.rx.rxBus.RxBus;
 import com.joker.rxweather.common.util.Utils;
-import com.joker.rxweather.model.entity.MainEntity;
+import com.joker.rxweather.model.entities.MainEntity;
 import com.joker.rxweather.presenter.ListPresenter;
 import com.joker.rxweather.presenter.ListPresenterImp;
 import com.joker.rxweather.ui.GridDecoration;
@@ -41,7 +41,7 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import rx.Observable;
-import rx.functions.Action1;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Joker on 2015/10/29.
@@ -69,6 +69,8 @@ public class ListActivity extends BaseActivity
   private RxBus rxBus;
 
   private WeakReference<AppCompatActivity> weakReference;
+
+  private CompositeSubscription compositeSubscription = new CompositeSubscription();
 
   private View.OnClickListener retryClickListener = new View.OnClickListener() {
     @Override public void onClick(View v) {
@@ -116,10 +118,12 @@ public class ListActivity extends BaseActivity
       List<MainEntity> entityList =
           (List<MainEntity>) savedInstanceState.getSerializable(Constants.CACHE);
       if (entityList != null) {
-        this.cacheObservable = Observable.just(entityList);
-        this.cacheObservable.compose(
+
+        this.cacheObservable = Observable.just(entityList).cache();
+
+        this.compositeSubscription.add(this.cacheObservable.compose(
             ListActivity.this.<List<MainEntity>>bindUntilEvent(ActivityEvent.DESTROY))
-            .subscribe(forecastAdapter);
+            .subscribe(forecastAdapter));
       } else {
         listPresenter.loadData();
       }
@@ -129,20 +133,21 @@ public class ListActivity extends BaseActivity
   private void setupAdapter() {
 
     swipeRefreshLayout.setColorSchemeResources(Constants.colors);
-    RxSwipeRefreshLayout.refreshes(swipeRefreshLayout)
+
+    this.compositeSubscription.add(RxSwipeRefreshLayout.refreshes(swipeRefreshLayout)
         .compose(ListActivity.this.<Void>bindUntilEvent(ActivityEvent.DESTROY))
-        .forEach(new Action1<Void>() {
-          @Override public void call(Void aVoid) {
-            /*refresh*/
+        .subscribe(new SimpleObserver<Void>() {
+          @Override public void onNext(Void o) {
+           /*refresh*/
             listPresenter.loadData();
           }
-        });
+        }));
 
     gridLayoutManager = new GridLayoutManager(ListActivity.this, 2);
-    gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
     gridLayoutManager.setSmoothScrollbarEnabled(true);
     gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
       @Override public int getSpanSize(int position) {
+        /*position == 0*/
         return forecastAdapter.isHeader(position) ? gridLayoutManager.getSpanCount() : 1;
       }
     });
@@ -161,13 +166,14 @@ public class ListActivity extends BaseActivity
     super.onSaveInstanceState(outState);
 
     if (cacheObservable != null) {
-      cacheObservable.compose(
+
+      this.compositeSubscription.add(cacheObservable.compose(
           ListActivity.this.<List<MainEntity>>bindUntilEvent(ActivityEvent.DESTROY))
-          .forEach(new Action1<List<MainEntity>>() {
-            @Override public void call(List<MainEntity> mainEntities) {
+          .subscribe(new SimpleObserver<List<MainEntity>>() {
+            @Override public void onNext(List<MainEntity> mainEntities) {
               outState.putSerializable(Constants.CACHE, (Serializable) mainEntities);
             }
-          });
+          }));
     }
   }
 
@@ -218,9 +224,10 @@ public class ListActivity extends BaseActivity
   @Override public void showForecasts(Observable<List<MainEntity>> listObservable) {
 
     this.cacheObservable = listObservable;
-    this.cacheObservable.compose(
+
+    this.compositeSubscription.add(this.cacheObservable.compose(
         ListActivity.this.<List<MainEntity>>bindUntilEvent(ActivityEvent.DESTROY))
-        .subscribe(forecastAdapter);
+        .subscribe(forecastAdapter));
   }
 
   @Override public boolean isContent() {
@@ -248,10 +255,10 @@ public class ListActivity extends BaseActivity
     }
     startBounds.offset(-globalOffset.x, -globalOffset.y);
 
-    if (rxBus == null) {
-      rxBus = MyApplication.get().getRxBus();
+    if (this.rxBus == null) {
+      this.rxBus = MyApplication.get().getRxBus();
     }
-    rxBus.postStickEvent(entity);
+    this.rxBus.postStickEvent(entity);
 
     DetailActivity.navigateToDetail(ListActivity.this, startBounds, globalOffset);
     overridePendingTransition(0, 0);
@@ -264,12 +271,14 @@ public class ListActivity extends BaseActivity
 
   @Override protected void exit() {
 
-    if (rxBus == null) rxBus = MyApplication.get().getRxBus();
-    if (rxBus.hasObservers()) rxBus.postEvent(new FinishActEvent());
+    if (this.rxBus == null) this.rxBus = MyApplication.get().getRxBus();
+    if (this.rxBus.hasObservers()) this.rxBus.postEvent(new FinishActEvent());
   }
 
   @Override protected void onDestroy() {
+    if (this.compositeSubscription.hasSubscriptions()) this.compositeSubscription.clear();
     super.onDestroy();
-    listPresenter.detachView();
+
+    this.listPresenter.detachView();
   }
 }
