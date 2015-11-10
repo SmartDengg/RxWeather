@@ -64,7 +64,7 @@ import com.joker.rxweather.common.Constants;
   }
 
   static class SavedState extends BaseSavedState {
-    float stateToSave;
+    private float stateToSave;
 
     SavedState(Parcelable superState) {
       super(superState);
