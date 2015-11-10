@@ -53,7 +53,6 @@ public class DetailActivity extends BaseActivity {
   private static final String START_BOUND = "START_BOUND";
   private static final String FINAL_BOUND = "FINAL_BOUND";
   private static final String SCALE = "SCALE";
-  private static final String FORK_Y = "Y";
   private static int orientation = -1;
 
   @Nullable @Bind(R.id.detail_layout_root_view) FrameLayout rootView;
@@ -153,8 +152,6 @@ public class DetailActivity extends BaseActivity {
       DetailActivity.this.startBounds = savedInstanceState.getParcelable(START_BOUND);
       DetailActivity.this.finalBounds = savedInstanceState.getParcelable(FINAL_BOUND);
       DetailActivity.this.scale = savedInstanceState.getFloat(SCALE);
-      float y = savedInstanceState.getFloat(FORK_Y);
-      DetailActivity.this.forkView.setTranslationY(y);
 
       ViewCompat.setPivotX(animIv, 0.0f);
       ViewCompat.setPivotY(animIv, 0.0f);
@@ -190,7 +187,6 @@ public class DetailActivity extends BaseActivity {
       outState.putParcelable(START_BOUND, startBounds);
       outState.putParcelable(FINAL_BOUND, finalBounds);
       outState.putFloat(SCALE, scale);
-      outState.putFloat(FORK_Y, forkView.getTranslationY());
     }
   }
 

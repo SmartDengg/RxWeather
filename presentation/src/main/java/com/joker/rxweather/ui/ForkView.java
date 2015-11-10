@@ -1,6 +1,8 @@
 package com.joker.rxweather.ui;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
@@ -20,6 +22,7 @@ import com.joker.rxweather.common.Constants;
 @CoordinatorLayout.DefaultBehavior(ForkView.Behavior.class) public class ForkView extends TextView {
 
   private static final String TAG = ForkView.class.getSimpleName();
+  private static final String Y = "Y";
 
   public ForkView(Context context) {
     super(context);
@@ -31,6 +34,62 @@ import com.joker.rxweather.common.Constants;
 
   public ForkView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
+  }
+
+  @Override protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    if (ForkView.this.getY() == 0 && ForkView.this.getVisibility() != GONE) {
+      ViewCompat.setY(ForkView.this, ForkView.calculateTranslation(ForkView.this));
+      ForkView.this.setVisibility(GONE);
+    }
+  }
+
+  @Override public Parcelable onSaveInstanceState() {
+
+    SavedState savedState = new SavedState(super.onSaveInstanceState());
+    savedState.stateToSave = ForkView.this.getTranslationY();
+    return savedState;
+  }
+
+  @Override public void onRestoreInstanceState(Parcelable state) {
+    if (!(state instanceof SavedState)) {
+      super.onRestoreInstanceState(state);
+      return;
+    }
+
+    SavedState savedState = (SavedState) state;
+    super.onRestoreInstanceState(savedState.getSuperState());
+    ForkView.this.setTranslationY(savedState.stateToSave);
+  }
+
+  static class SavedState extends BaseSavedState {
+    float stateToSave;
+
+    SavedState(Parcelable superState) {
+      super(superState);
+    }
+
+    private SavedState(Parcel in) {
+      super(in);
+      this.stateToSave = in.readInt();
+    }
+
+    @Override public void writeToParcel(Parcel out, int flags) {
+      super.writeToParcel(out, flags);
+      out.writeFloat(this.stateToSave);
+    }
+
+    public static final Parcelable.Creator<SavedState> CREATOR =
+        new Parcelable.Creator<SavedState>() {
+          public SavedState createFromParcel(Parcel in) {
+            return new SavedState(in);
+          }
+
+          public SavedState[] newArray(int size) {
+            return new SavedState[size];
+          }
+        };
   }
 
   public static class Behavior
@@ -65,26 +124,21 @@ import com.joker.rxweather.common.Constants;
         return false;
       }
 
-      int distanceToScroll = Behavior.this.calculateTranslation(child);
+      int distanceToScroll = ForkView.calculateTranslation(child);
 
       /*other animation......*/
       //ViewCompat.setTranslationY(child, Math.abs(y) - distanceToScroll);
 
-      if (appBarLayout.getY() == 0 && !Behavior.this.isOuting && child.getVisibility() != GONE) {
-        ViewCompat.setTranslationY(child, -distanceToScroll);
-        child.setVisibility(GONE);
+      if (Math.abs(appBarLayout.getY()) >= getMinimumHeightForVisibleOverlappingContent(
+          appBarLayout)) {
+
+        if (child.getVisibility() != VISIBLE) {
+          this.animateIn(child, distanceToScroll);
+        }
       } else {
-        if (Math.abs(appBarLayout.getY()) >= getMinimumHeightForVisibleOverlappingContent(
-            appBarLayout)) {
 
-          if (child.getVisibility() != VISIBLE) {
-            this.animateIn(child, distanceToScroll);
-          }
-        } else {
-
-          if (!Behavior.this.isOuting && child.getVisibility() == View.VISIBLE) {
-            this.animateOut(child, -distanceToScroll);
-          }
+        if (!Behavior.this.isOuting && child.getVisibility() == View.VISIBLE) {
+          this.animateOut(child, -distanceToScroll);
         }
       }
       return true;
@@ -151,14 +205,14 @@ import com.joker.rxweather.common.Constants;
             }
           });
     }
+  }
 
-    private int calculateTranslation(View view) {
-      int height = view.getHeight();
+  private static int calculateTranslation(View view) {
+    int height = view.getHeight();
 
-      ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-      int margins = params.topMargin + params.bottomMargin;
+    ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+    int margins = params.topMargin + params.bottomMargin;
 
-      return height + margins;
-    }
+    return height + margins;
   }
 }
