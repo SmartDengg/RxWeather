@@ -24,7 +24,6 @@ import org.json.JSONObject;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
@@ -56,24 +55,19 @@ public class PrepareCase extends UseCase<SparseArray> {
     this.handlerThread = new HandlerThread("backgroundThread");
     this.handlerThread.start();
 
-    return Observable.defer(new Func0<Observable<SparseArray>>() {
-      @Override public Observable<SparseArray> call() {
+    return Observable.zip(PrepareCase.this.getLocationObservable(),
+        PrepareCase.this.getRequestCitiesObservable(),
+        new Func2<AddressEntity, List<RequestCitiesEntity.RequestCity>, SparseArray>() {
+          @Override public SparseArray call(AddressEntity locationEntity,
+              List<RequestCitiesEntity.RequestCity> requestCities) {
 
-        return Observable.zip(PrepareCase.this.getLocationObservable(),
-            PrepareCase.this.getRequestCitiesObservable(),
-            new Func2<AddressEntity, List<RequestCitiesEntity.RequestCity>, SparseArray>() {
-              @Override public SparseArray call(AddressEntity locationEntity,
-                  List<RequestCitiesEntity.RequestCity> requestCities) {
+            SparseArray sparseArray = new SparseArray(2);
+            sparseArray.put(Constants.LOCATION_TAG, locationEntity);
+            sparseArray.put(Constants.FORECAST_TAG, requestCities);
 
-                SparseArray sparseArray = new SparseArray(2);
-                sparseArray.put(Constants.LOCATION_TAG, locationEntity);
-                sparseArray.put(Constants.FORECAST_TAG, requestCities);
-
-                return sparseArray;
-              }
-            });
-      }
-    });
+            return sparseArray;
+          }
+        });
   }
 
   @NonNull private Observable<AddressEntity> getLocationObservable() {

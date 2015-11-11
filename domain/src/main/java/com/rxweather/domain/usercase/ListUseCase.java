@@ -1,12 +1,11 @@
 package com.rxweather.domain.usercase;
 
 import com.joker.rxweather.model.entities.AddressEntity;
-import com.joker.rxweather.model.entities.RequestCitiesEntity;
 import com.joker.rxweather.model.entities.MainEntity;
+import com.joker.rxweather.model.entities.RequestCitiesEntity;
 import com.joker.rxweather.model.service.ServiceRest;
 import java.util.List;
 import rx.Observable;
-import rx.functions.Func0;
 
 /**
  * Created by Joker on 2015/10/31.
@@ -26,12 +25,6 @@ public class ListUseCase extends UseCase<List<MainEntity>> {
 
   @Override protected Observable<List<MainEntity>> interactor() {
 
-    //return serviceRest.getWeatherByCityOrCityId(addressEntity, requestCities);
-
-    return Observable.defer(new Func0<Observable<List<MainEntity>>>() {
-      @Override public Observable<List<MainEntity>> call() {
-        return serviceRest.getWeatherByCityOrCityId(addressEntity, requestCities);
-      }
-    });
+    return serviceRest.getWeatherByCityOrCityId(addressEntity, requestCities);
   }
 }
