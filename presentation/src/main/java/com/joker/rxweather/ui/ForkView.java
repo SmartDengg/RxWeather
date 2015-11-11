@@ -72,7 +72,7 @@ import com.joker.rxweather.common.Constants;
 
     private SavedState(Parcel in) {
       super(in);
-      this.stateToSave = in.readInt();
+      this.stateToSave = in.readFloat();
     }
 
     @Override public void writeToParcel(Parcel out, int flags) {
