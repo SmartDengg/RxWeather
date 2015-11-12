@@ -12,7 +12,7 @@
 
 我写了一篇文章，对这个项目做更深入的描述和解释：
 
-[Architecting Android with RxJava](http://www.jianshu.com/writer#/notebooks/575116/notes/2360598)
+[Architecting Android with RxJava](http://www.jianshu.com/p/943ceaccfdff)
 
 
 **Architecture**
