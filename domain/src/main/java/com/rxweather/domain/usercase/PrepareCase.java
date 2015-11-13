@@ -40,14 +40,12 @@ public class PrepareCase extends UseCase<SparseArray> {
   private LocationManager locationManager;
   private AssetManager assetManager;
   private HandlerThread handlerThread;
-  private ServiceRest serviceRest;
 
   private RequestCitiesEntity requestCitiesEntity = null;
 
   public PrepareCase(LocationManager locationManager, AssetManager assetManager) {
     this.locationManager = locationManager;
     this.assetManager = assetManager;
-    this.serviceRest = ServiceRest.getInstance();
   }
 
   @Override protected Observable<SparseArray> interactor() {
@@ -112,7 +110,7 @@ public class PrepareCase extends UseCase<SparseArray> {
     }).concatMap(new Func1<Location, Observable<AddressEntity>>() {
       @Override public Observable<AddressEntity> call(Location location) {
 
-        return serviceRest.getCityByCoordinate(location);
+        return ServiceRest.getInstance().getCityByCoordinate(location);
       }
     });
   }
