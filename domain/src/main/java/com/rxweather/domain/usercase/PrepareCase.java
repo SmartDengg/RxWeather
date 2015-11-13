@@ -88,7 +88,7 @@ public class PrepareCase extends UseCase<SparseArray> {
         subscriber.add(new Subscription() {
           @Override public void unsubscribe() {
             if (unsubscribedUpdater.compareAndSet(PrepareCase.this, 0, 1)) {
-
+              
               locationManager.removeUpdates(locationListener);
               handlerThread.getLooper().quit();
             }
