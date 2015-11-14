@@ -23,10 +23,10 @@ import com.joker.rxweather.MyApplication;
 import com.joker.rxweather.R;
 import com.joker.rxweather.adapter.ForecastAdapter;
 import com.joker.rxweather.common.Constants;
+import com.joker.rxweather.common.Utils;
 import com.joker.rxweather.common.event.FinishActEvent;
 import com.joker.rxweather.common.rx.rxAndroid.SimpleObserver;
 import com.joker.rxweather.common.rx.rxbus.RxBus;
-import com.joker.rxweather.common.Utils;
 import com.joker.rxweather.model.entities.MainEntity;
 import com.joker.rxweather.presenter.ListPresenter;
 import com.joker.rxweather.presenter.ListPresenterImp;
@@ -41,6 +41,8 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import rx.Observable;
+import rx.Single;
+import rx.SingleSubscriber;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -165,8 +167,17 @@ public class ListActivity extends BaseActivity
   @Override protected void onSaveInstanceState(final Bundle outState) {
     super.onSaveInstanceState(outState);
 
-    if (cacheObservable != null) {
+    Single.just("1").subscribe(new SingleSubscriber<String>() {
+      @Override public void onSuccess(String value) {
 
+      }
+
+      @Override public void onError(Throwable error) {
+
+      }
+    });
+
+    if (cacheObservable != null) {
       this.compositeSubscription.add(cacheObservable.compose(
           ListActivity.this.<List<MainEntity>>bindUntilEvent(ActivityEvent.DESTROY))
           .subscribe(new SimpleObserver<List<MainEntity>>() {
