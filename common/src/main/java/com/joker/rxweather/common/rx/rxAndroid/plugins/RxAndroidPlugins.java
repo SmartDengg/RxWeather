@@ -32,7 +32,7 @@ public final class RxAndroidPlugins {
     }
 
     private final AtomicReference<RxAndroidSchedulersHook> schedulersHook =
-            new AtomicReference<RxAndroidSchedulersHook>();
+            new AtomicReference<>();
 
     RxAndroidPlugins() {
     }
