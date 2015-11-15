@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.util.SparseArray;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.jakewharton.rxbinding.internal.MainThreadSubscription;
 import com.joker.rxweather.common.Constants;
 import com.joker.rxweather.common.rx.rxAndroid.SchedulersCompat;
 import com.joker.rxweather.model.entities.AddressEntity;
@@ -19,11 +20,9 @@ import com.rxweather.domain.LocationListenerAdapter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import org.json.JSONObject;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.functions.Func1;
 import rx.functions.Func2;
 
@@ -33,9 +32,6 @@ import rx.functions.Func2;
 public class PrepareCase extends UseCase<SparseArray> {
 
   private static final String TAG = PrepareCase.class.getSimpleName();
-  private volatile int unsubscribed;
-  private static final AtomicIntegerFieldUpdater<PrepareCase> unsubscribedUpdater =
-      AtomicIntegerFieldUpdater.newUpdater(PrepareCase.class, "unsubscribed");
 
   private LocationManager locationManager;
   private AssetManager assetManager;
@@ -80,22 +76,13 @@ public class PrepareCase extends UseCase<SparseArray> {
               subscriber.onNext(location);
               subscriber.onCompleted();
             }
-            locationManager.removeUpdates(this);
-            handlerThread.getLooper().quit();
           }
         };
 
-        subscriber.add(new Subscription() {
-          @Override public void unsubscribe() {
-            if (unsubscribedUpdater.compareAndSet(PrepareCase.this, 0, 1)) {
-              
-              locationManager.removeUpdates(locationListener);
-              handlerThread.getLooper().quit();
-            }
-          }
-
-          @Override public boolean isUnsubscribed() {
-            return unsubscribed != 0;
+        subscriber.add(new MainThreadSubscription() {
+          @Override protected void onUnsubscribe() {
+            locationManager.removeUpdates(locationListener);
+            handlerThread.getLooper().quit();
           }
         });
 
