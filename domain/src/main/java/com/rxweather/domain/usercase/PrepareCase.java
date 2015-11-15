@@ -76,6 +76,8 @@ public class PrepareCase extends UseCase<SparseArray> {
               subscriber.onNext(location);
               subscriber.onCompleted();
             }
+            locationManager.removeUpdates(this);
+            handlerThread.getLooper().quit();
           }
         };
 
