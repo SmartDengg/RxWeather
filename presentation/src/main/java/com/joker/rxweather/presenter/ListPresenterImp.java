@@ -1,7 +1,6 @@
 package com.joker.rxweather.presenter;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
@@ -11,11 +10,12 @@ import com.joker.rxweather.exception.ErrorHanding;
 import com.joker.rxweather.model.entities.AddressEntity;
 import com.joker.rxweather.model.entities.MainEntity;
 import com.joker.rxweather.model.entities.RequestCitiesEntity;
+import com.joker.rxweather.model.request.ListRequest;
+import com.joker.rxweather.model.request.PrepareRequest;
 import com.joker.rxweather.views.ListView;
 import com.rxweather.domain.usercase.ListUseCase;
 import com.rxweather.domain.usercase.PrepareCase;
 import com.rxweather.domain.usercase.UseCase;
-import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
@@ -29,13 +29,10 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
 
   private ListView<Observable<List<MainEntity>>> listView;
 
-  private UseCase<SparseArray> prepareCase;
-  private UseCase<List<MainEntity>> listUseCase;
+  private UseCase<SparseArray, PrepareRequest> prepareCase;
+  private UseCase<List<MainEntity>, ListRequest> listUseCase;
 
-  private AddressEntity addressEntity = new AddressEntity();
-  private List<RequestCitiesEntity.RequestCity> requestCities = new ArrayList<>();
-  private LocationManager locationManager;
-  private AssetManager assetManager;
+  private PrepareRequest prepareRequest;
 
   public ListPresenterImp() {
   }
@@ -43,17 +40,17 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
   @Override public void attachView(@NonNull ListView<Observable<List<MainEntity>>> view) {
     this.listView = view;
 
-    this.locationManager =
-        (LocationManager) this.listView.getContext().getSystemService(Context.LOCATION_SERVICE);
-    this.assetManager = this.listView.getContext().getAssets();
+    this.prepareRequest = new PrepareRequest(
+        (LocationManager) this.listView.getContext().getSystemService(Context.LOCATION_SERVICE),
+        this.listView.getContext().getAssets());
 
-    this.prepareCase = new PrepareCase(locationManager, assetManager);
-    this.listUseCase = new ListUseCase(addressEntity, requestCities);
+    this.prepareCase = new PrepareCase();
+    this.listUseCase = new ListUseCase();
   }
 
   @Override public void loadData() {
     ListPresenterImp.this.showLoading();
-    prepareCase.subscribe(new PrepareSubscriber());
+    this.prepareCase.subscribe(new PrepareSubscriber(), prepareRequest);
   }
 
   private void showLoading() {
@@ -75,8 +72,10 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
   /*准备工作Subscriber，位置，城市列表等*/
   @RxLogSubscriber private final class PrepareSubscriber extends Subscriber<SparseArray> {
 
+    private ListRequest listRequest;
+
     @Override public void onCompleted() {
-      ListPresenterImp.this.listUseCase.subscribe(new ListSubscriber());
+      ListPresenterImp.this.listUseCase.subscribe(new ListSubscriber(), listRequest);
     }
 
     @Override public void onError(Throwable e) {
@@ -84,9 +83,7 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
     }
 
     @Override public void onNext(SparseArray sparseArray) {
-      addressEntity.city = ((AddressEntity) sparseArray.get(Constants.LOCATION_TAG)).city;
-      requestCities.clear();
-      requestCities.addAll(
+      listRequest = new ListRequest(((AddressEntity) sparseArray.get(Constants.LOCATION_TAG)),
           (List<RequestCitiesEntity.RequestCity>) sparseArray.get(Constants.FORECAST_TAG));
     }
   }
@@ -110,8 +107,5 @@ public class ListPresenterImp implements ListPresenter<ListView<Observable<List<
   @Override public void detachView() {
     this.prepareCase.unsubscribe();
     this.listUseCase.unsubscribe();
-
-    this.locationManager = null;
-    this.assetManager = null;
   }
 }

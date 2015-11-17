@@ -8,17 +8,14 @@ import rx.Observable;
 /**
  * Created by Joker on 2015/10/31.
  */
-public class SearchUseCase extends UseCase<SearchEntity> {
+public class SearchUseCase extends UseCase<SearchEntity, AddressEntity> {
 
   private static final String TAG = SearchUseCase.class.getSimpleName();
 
-  private AddressEntity addressEntity;
-
-  public SearchUseCase(AddressEntity addressEntity) {
-    this.addressEntity = addressEntity;
+  public SearchUseCase() {
   }
 
-  @Override protected Observable<SearchEntity> interactor() {
+  @Override protected Observable<SearchEntity> interactor(AddressEntity addressEntity) {
 
     return ServiceRest.getInstance().searchWeatherByCityName(addressEntity.city);
   }

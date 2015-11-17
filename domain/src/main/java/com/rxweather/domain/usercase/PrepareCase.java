@@ -15,6 +15,7 @@ import com.joker.rxweather.common.Constants;
 import com.joker.rxweather.common.rx.rxAndroid.SchedulersCompat;
 import com.joker.rxweather.model.entities.AddressEntity;
 import com.joker.rxweather.model.entities.RequestCitiesEntity;
+import com.joker.rxweather.model.request.PrepareRequest;
 import com.joker.rxweather.model.service.ServiceRest;
 import com.rxweather.domain.LocationListenerAdapter;
 import java.io.IOException;
@@ -29,28 +30,24 @@ import rx.functions.Func2;
 /**
  * Created by Joker on 2015/10/31.
  */
-public class PrepareCase extends UseCase<SparseArray> {
+public class PrepareCase extends UseCase<SparseArray, PrepareRequest> {
 
   private static final String TAG = PrepareCase.class.getSimpleName();
 
-  private LocationManager locationManager;
-  private AssetManager assetManager;
   private HandlerThread handlerThread;
 
   private RequestCitiesEntity requestCitiesEntity = null;
 
-  public PrepareCase(LocationManager locationManager, AssetManager assetManager) {
-    this.locationManager = locationManager;
-    this.assetManager = assetManager;
+  public PrepareCase() {
   }
 
-  @Override protected Observable<SparseArray> interactor() {
+  @Override protected Observable<SparseArray> interactor(PrepareRequest prepareRequest) {
 
     this.handlerThread = new HandlerThread("backgroundThread");
     this.handlerThread.start();
 
-    return Observable.zip(PrepareCase.this.getLocationObservable(),
-        PrepareCase.this.getRequestCitiesObservable(),
+    return Observable.zip(PrepareCase.this.getLocationObservable(prepareRequest.locationManager),
+        PrepareCase.this.getRequestCitiesObservable(prepareRequest.assetManager),
         new Func2<AddressEntity, List<RequestCitiesEntity.RequestCity>, SparseArray>() {
           @Override public SparseArray call(AddressEntity locationEntity,
               List<RequestCitiesEntity.RequestCity> requestCities) {
@@ -64,7 +61,8 @@ public class PrepareCase extends UseCase<SparseArray> {
         });
   }
 
-  @NonNull private Observable<AddressEntity> getLocationObservable() {
+  @NonNull
+  private Observable<AddressEntity> getLocationObservable(final LocationManager locationManager) {
 
     return Observable.create(new Observable.OnSubscribe<Location>() {
 
@@ -104,7 +102,8 @@ public class PrepareCase extends UseCase<SparseArray> {
     });
   }
 
-  private Observable<List<RequestCitiesEntity.RequestCity>> getRequestCitiesObservable() {
+  private Observable<List<RequestCitiesEntity.RequestCity>> getRequestCitiesObservable(
+      final AssetManager assetManager) {
 
     return Observable.create(new Observable.OnSubscribe<List<RequestCitiesEntity.RequestCity>>() {
       @Override

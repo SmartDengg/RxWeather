@@ -16,7 +16,7 @@ import rx.Subscriber;
 public class SearchPresenterImp implements SearchPresenter<SearchView<Observable<SearchEntity>>> {
 
   private SearchView<Observable<SearchEntity>> searchView;
-  private UseCase<SearchEntity> searchCase;
+  private UseCase<SearchEntity, AddressEntity> searchCase;
 
   private AddressEntity addressEntity = new AddressEntity();
 
@@ -25,15 +25,13 @@ public class SearchPresenterImp implements SearchPresenter<SearchView<Observable
 
   @Override public void attachView(SearchView<Observable<SearchEntity>> view) {
     this.searchView = view;
-    this.searchCase = new SearchUseCase(addressEntity);
+    this.searchCase = new SearchUseCase();
   }
 
   @Override public void search(String cityName) {
 
     SearchPresenterImp.this.showLoading();
-
-    this.addressEntity.city = cityName;
-    this.searchCase.subscribe(new SearchSubscriber());
+    this.searchCase.subscribe(new SearchSubscriber(), addressEntity.setCity(cityName));
   }
 
   private void showLoading() {

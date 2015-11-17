@@ -9,6 +9,11 @@ public class AddressEntity {
   public String city;
   public String district;
 
+  public AddressEntity setCity(String city) {
+    this.city = city;
+    return AddressEntity.this;
+  }
+
   @Override public String toString() {
     return "LocationEntity{" +
         "province='" + province + '\'' +

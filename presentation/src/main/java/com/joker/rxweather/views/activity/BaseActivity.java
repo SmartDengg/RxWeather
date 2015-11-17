@@ -59,9 +59,9 @@ public abstract class BaseActivity extends RxAppCompatActivity {
   }
 
   @CallSuper @Override protected void onDestroy() {
+    if (subscribe != null && !subscribe.isUnsubscribed()) subscribe.unsubscribe();
     super.onDestroy();
 
-    if (subscribe != null && !subscribe.isUnsubscribed()) subscribe.unsubscribe();
     ButterKnife.unbind(BaseActivity.this);
     MyApplication.get().getRefWatcher().watch(this);
   }
