@@ -41,8 +41,6 @@ import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import rx.Observable;
-import rx.Single;
-import rx.SingleSubscriber;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -147,6 +145,7 @@ public class ListActivity extends BaseActivity
 
     gridLayoutManager = new GridLayoutManager(ListActivity.this, 2);
     gridLayoutManager.setSmoothScrollbarEnabled(true);
+
     gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
       @Override public int getSpanSize(int position) {
         /*position == 0*/
@@ -166,17 +165,6 @@ public class ListActivity extends BaseActivity
 
   @Override protected void onSaveInstanceState(final Bundle outState) {
     super.onSaveInstanceState(outState);
-
-    Single.just("1").subscribe(new SingleSubscriber<String>() {
-      @Override public void onSuccess(String value) {
-
-      }
-
-      @Override public void onError(Throwable error) {
-
-      }
-    });
-
     if (cacheObservable != null) {
       this.compositeSubscription.add(cacheObservable.compose(
           ListActivity.this.<List<MainEntity>>bindUntilEvent(ActivityEvent.DESTROY))
