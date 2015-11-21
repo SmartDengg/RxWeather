@@ -72,6 +72,7 @@
               android:layout_weight="1"
               android:layout_height="0dp"
               android:layout_gravity="center"
+              android:background="@android:color/transparent"
               />
         </LinearLayout>
       </com.joker.rxweather.ui.ProgressLayout>

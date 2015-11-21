@@ -30,12 +30,11 @@ import com.joker.rxweather.MyApplication;
 import com.joker.rxweather.R;
 import com.joker.rxweather.adapter.DetailAdapter;
 import com.joker.rxweather.common.Constants;
-import com.joker.rxweather.common.rx.rxbus.RxBus;
 import com.joker.rxweather.common.Utils;
+import com.joker.rxweather.common.rx.rxbus.RxBus;
 import com.joker.rxweather.model.entities.ForecastWeatherEntity;
 import com.joker.rxweather.model.entities.MainEntity;
 import com.joker.rxweather.model.entities.WeatherEntity;
-import com.joker.rxweather.ui.ForkView;
 import com.joker.rxweather.ui.InsertDecoration;
 import com.trello.rxlifecycle.ActivityEvent;
 import java.util.List;
@@ -64,7 +63,6 @@ public class DetailActivity extends BaseActivity {
 
   @Nullable @Bind(R.id.detail_layout_rv) RecyclerView recyclerView;
 
-  @Nullable @Bind(R.id.detail_layout_fv) ForkView forkView;
   @Nullable @Bind(R.id.detail_layout_anim_iv) ImageView animIv;
 
   private Rect startBounds;
@@ -87,7 +85,6 @@ public class DetailActivity extends BaseActivity {
   public static void navigateToDetail(AppCompatActivity startingActivity, Rect startBounds,
       Point globalOffset) {
     Intent intent = new Intent(startingActivity, DetailActivity.class);
-
     intent.putExtra(Constants.POINT, globalOffset).putExtra(Constants.RECT, startBounds);
     startingActivity.startActivity(intent);
   }

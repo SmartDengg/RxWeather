@@ -30,6 +30,7 @@
           android:layout_centerVertical="true"
           android:layout_marginRight="@dimen/material_24dp"
           android:layout_alignParentRight="true"
+          android:background="@android:color/transparent"
           />
 
       <LinearLayout
