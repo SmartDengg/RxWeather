@@ -41,6 +41,7 @@ import com.trello.rxlifecycle.ActivityEvent;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
+import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -130,7 +131,11 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
     this.compositeSubscription.add(RxTextView.textChanges(editText)
         .skip(1)
         .debounce(Constants.MILLISECONDS_600, TimeUnit.MILLISECONDS)
-        .onBackpressureLatest()
+        .switchMap(new Func1<CharSequence, Observable<CharSequence>>() {
+          @Override public Observable<CharSequence> call(CharSequence charSequence) {
+            return Observable.just(charSequence);
+          }
+        })
         .observeOn(AndroidSchedulers.mainThread())
         .compose(SearchActivity.this.<CharSequence>bindUntilEvent(ActivityEvent.DESTROY))
         .subscribe(new SimpleObserver<CharSequence>() {

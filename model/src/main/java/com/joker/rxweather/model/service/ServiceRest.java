@@ -87,7 +87,7 @@ public class ServiceRest {
       List<RequestCitiesEntity.RequestCity> requestCities) {
 
     return Observable.zip(ServiceRest.this.getForecastByLocation(locationEntity),
-        getForecastByCity(requestCities),
+        ServiceRest.this.getForecastByCity(requestCities),
         new Func2<MainEntity, List<MainEntity>, List<MainEntity>>() {
           @Override
           public List<MainEntity> call(MainEntity mainEntity, List<MainEntity> mainEntities) {

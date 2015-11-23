@@ -19,9 +19,8 @@ android {
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
+  compile fileTree(include: ['*.jar'], dir: 'libs')
   testCompile 'junit:junit:4.12'
-
   /*ReactiveX library*/
   compile 'io.reactivex:rxjava:1.0.3'
   compile 'com.trello:rxlifecycle:0.3.0'

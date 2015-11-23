@@ -132,7 +132,7 @@ public class ListActivity extends BaseActivity
 
   private void setupAdapter() {
 
-    swipeRefreshLayout.setColorSchemeResources(Constants.colors);
+    this.swipeRefreshLayout.setColorSchemeResources(Constants.colors);
 
     this.compositeSubscription.add(RxSwipeRefreshLayout.refreshes(swipeRefreshLayout)
         .compose(ListActivity.this.<Void>bindUntilEvent(ActivityEvent.DESTROY))
