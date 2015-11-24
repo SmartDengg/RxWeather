@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Joker on 2015/10/31.
  */
-public class MainEntity implements Serializable {
+public class MainEntity implements Serializable, Comparable<MainEntity> {
 
   private WeatherEntity weatherEntity;
   private List<ForecastWeatherEntity> forecastWeatherEntityList;
@@ -30,5 +30,14 @@ public class MainEntity implements Serializable {
         "forecastWeatherEntityList=" + forecastWeatherEntityList +
         ", weatherEntity=" + weatherEntity +
         '}';
+  }
+
+  @Override public int compareTo(MainEntity another) {
+
+    Float id = Float.parseFloat(weatherEntity.cityId.substring(2, weatherEntity.cityId.length()));
+    Float another_id = Float.parseFloat(
+        another.getWeatherEntity().cityId.substring(2, another.getWeatherEntity().cityId.length()));
+
+    return id.compareTo(another_id);
   }
 }

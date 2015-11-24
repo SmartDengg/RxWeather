@@ -43,6 +43,12 @@ public class SchedulersCompat {
     }
   };
 
+  private static final Observable.Transformer mainThreadTransformer = new Observable.Transformer() {
+    @Override public Object call(Object observable) {
+      return ((Observable) observable).observeOn(AndroidSchedulers.mainThread());
+    }
+  };
+
   /**
    * Don't break the chain: use RxJava's compose() operator
    */
@@ -64,5 +70,9 @@ public class SchedulersCompat {
 
   public static <T> Observable.Transformer<T, T> applyExecutorSchedulers() {
     return (Observable.Transformer<T, T>) executorTransformer;
+  }
+
+  public static <T> Observable.Transformer<T, T> observeOnMainThread() {
+    return (Observable.Transformer<T, T>) mainThreadTransformer;
   }
 }

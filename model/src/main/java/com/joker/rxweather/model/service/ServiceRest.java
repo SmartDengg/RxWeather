@@ -4,6 +4,7 @@ import android.location.Location;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.joker.rxweather.common.Constants;
+import com.joker.rxweather.common.rx.rxAndroid.JobExecutor;
 import com.joker.rxweather.common.rx.rxAndroid.SchedulersCompat;
 import com.joker.rxweather.model.OkClientInstance;
 import com.joker.rxweather.model.entities.AddressEntity;
@@ -25,6 +26,7 @@ import retrofit.converter.GsonConverter;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Joker on 2015/10/31.
@@ -95,7 +97,7 @@ public class ServiceRest {
             mainEntities.add(0, mainEntity);
             return mainEntities;
           }
-        }).compose(SchedulersCompat.<List<MainEntity>>applyExecutorSchedulers());
+        }).compose(SchedulersCompat.<List<MainEntity>>observeOnMainThread());
   }
 
   /**
@@ -133,7 +135,8 @@ public class ServiceRest {
                   }
                 });
           }
-        });
+        })
+        .subscribeOn(Schedulers.from(JobExecutor.eventExecutor));
   }
 
   /**
@@ -143,7 +146,7 @@ public class ServiceRest {
       final List<RequestCitiesEntity.RequestCity> requestCities) {
 
     return Observable.from(requestCities)
-        .concatMap(new Func1<RequestCitiesEntity.RequestCity, Observable<ForecastResponse>>() {
+        .flatMap(new Func1<RequestCitiesEntity.RequestCity, Observable<ForecastResponse>>() {
           @Override
           public Observable<ForecastResponse> call(RequestCitiesEntity.RequestCity requestCity) {
 
@@ -151,7 +154,8 @@ public class ServiceRest {
             cityParams.put("cityid", requestCity.id);
             cityParams.put("key", Constants.FORECAST_KEY);
 
-            return serviceApi.getForecastByKey(cityParams);
+            return serviceApi.getForecastByKey(cityParams)
+                .subscribeOn(Schedulers.from(JobExecutor.eventExecutor));
           }
         })
         .timeout(Constants.TIME_OUT, TimeUnit.MILLISECONDS)
@@ -180,7 +184,30 @@ public class ServiceRest {
                 });
           }
         })
-        .toList();
+        .toSortedList(requestCities.size());
+  }
+
+  private Observable<WeatherEntity> liftWeather(ForecastResponse.Main main) {
+
+    return Observable.just(main).map(new Func1<ForecastResponse.Main, WeatherEntity>() {
+      @Override public WeatherEntity call(ForecastResponse.Main main) {
+
+        /**/
+        ForecastResponse.Main.Basic basic = main.getBasic();
+
+        /**/
+        ForecastResponse.Main.CurrentWeather currentWeather = main.getCurrentWeather();
+        ForecastResponse.Main.CurrentWeather.Condition condition = currentWeather.getCondition();
+        ForecastResponse.Main.CurrentWeather.Wind wind = currentWeather.getWind();
+
+        /**/
+        ForecastResponse.Main.Suggestion.Drsg drsg = main.getSuggestion().getDrsg();
+
+        return new WeatherEntity(basic.cityId, basic.cityName, condition.weatherCode,
+            condition.weatherText, currentWeather.temperature,
+            wind.description + wind.windGrade + "级", drsg.description);
+      }
+    });
   }
 
   private Observable<List<ForecastWeatherEntity>> transferForecast(
@@ -208,29 +235,6 @@ public class ServiceRest {
           }
         })
         .toList();
-  }
-
-  private Observable<WeatherEntity> liftWeather(ForecastResponse.Main main) {
-
-    return Observable.just(main).map(new Func1<ForecastResponse.Main, WeatherEntity>() {
-      @Override public WeatherEntity call(ForecastResponse.Main main) {
-
-        /**/
-        ForecastResponse.Main.Basic basic = main.getBasic();
-
-        /**/
-        ForecastResponse.Main.CurrentWeather currentWeather = main.getCurrentWeather();
-        ForecastResponse.Main.CurrentWeather.Condition condition = currentWeather.getCondition();
-        ForecastResponse.Main.CurrentWeather.Wind wind = currentWeather.getWind();
-
-        /**/
-        ForecastResponse.Main.Suggestion.Drsg drsg = main.getSuggestion().getDrsg();
-
-        return new WeatherEntity(basic.cityId, basic.cityName, condition.weatherCode,
-            condition.weatherText, currentWeather.temperature,
-            wind.description + wind.windGrade + "级", drsg.description);
-      }
-    });
   }
 
   /**
@@ -276,6 +280,9 @@ public class ServiceRest {
         .compose(SchedulersCompat.<AddressEntity>applyExecutorSchedulers());
   }
 
+  /**
+   * 根据搜索获取城市信息
+   */
   public Observable<SearchEntity> searchWeatherByCityName(final String cityName) {
 
     HashMap<String, String> searchPrams = new HashMap<>(2);
