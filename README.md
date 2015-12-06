@@ -22,7 +22,6 @@
 
 ![MVP-Architecture](http://upload-images.jianshu.io/upload_images/268450-3951595406461dee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-
 [*The Clean Architecture：*](http://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 
 ![Clean-Architecture](http://upload-images.jianshu.io/upload_images/268450-5e567202af6e2671.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
@@ -85,7 +84,7 @@
 </a>
 
 <a href="http://www.jianshu.com/users/df40282480b4/latest_articles">
-  <img alt="Follow me on Jianshu" src="http://upload-images.jianshu.io/upload_images/268450-f4538fd6de95aaa0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
+  <img alt="Follow me on Jianshu" src="http://upload-images.jianshu.io/upload_images/268450-8bd87b592ae0cacd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 </a>
 
 <a href="http://www.imooc.com/myclub/myquestion/t/ques">
