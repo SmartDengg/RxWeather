@@ -113,10 +113,8 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
       });
     } else {
 
-      SearchEntity searchEntity =
-          (SearchEntity) savedInstanceState.getSerializable(Constants.CACHE);
-      SearchActivity.this.cityName =
-          (String) savedInstanceState.getSerializable(Constants.CACHE_CITY);
+      SearchEntity searchEntity = (SearchEntity) savedInstanceState.getSerializable(Constants.CACHE);
+      SearchActivity.this.cityName = (String) savedInstanceState.getSerializable(Constants.CACHE_CITY);
 
       if (searchEntity != null) {
         SearchActivity.this.showResult(Observable.just(searchEntity));
@@ -128,42 +126,50 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
 
   private void setListener() {
 
-    this.compositeSubscription.add(RxTextView.textChanges(editText)
-        .skip(1)
-        .debounce(Constants.MILLISECONDS_600, TimeUnit.MILLISECONDS)
-        .switchMap(new Func1<CharSequence, Observable<CharSequence>>() {
-          @Override public Observable<CharSequence> call(CharSequence charSequence) {
-            return Observable.just(charSequence);
-          }
-        })
-        .observeOn(AndroidSchedulers.mainThread())
-        .compose(SearchActivity.this.<CharSequence>bindUntilEvent(ActivityEvent.DESTROY))
-        .subscribe(new SimpleObserver<CharSequence>() {
-          @Override public void onNext(CharSequence charSequence) {
+    this.compositeSubscription.add(RxTextView
+                                       .textChanges(editText)
+                                       .skip(1)
+                                       .debounce(Constants.MILLISECONDS_600, TimeUnit.MILLISECONDS)
+                                       .switchMap(new Func1<CharSequence, Observable<CharSequence>>() {
+                                         @Override public Observable<CharSequence> call(CharSequence charSequence) {
+                                           return Observable.just(charSequence);
+                                         }
+                                       })
+                                       .switchMap(new Func1<CharSequence, Observable<CharSequence>>() {
+                                         @Override public Observable<CharSequence> call(CharSequence charSequence) {
+                                           return Observable.just(charSequence);
+                                         }
+                                       })
+                                       .observeOn(AndroidSchedulers.mainThread())
+                                       .compose(SearchActivity.this.<CharSequence>bindUntilEvent(ActivityEvent.DESTROY))
+                                       .subscribe(new SimpleObserver<CharSequence>() {
+                                         @Override public void onNext(CharSequence charSequence) {
 
-            String temp = charSequence.toString();
-            if (!TextUtils.isEmpty(temp.trim()) && !temp.equals(SearchActivity.this.cityName)) {
+                                           String temp = charSequence.toString();
+                                           if (!TextUtils.isEmpty(temp.trim()) && !temp.equals(
+                                               SearchActivity.this.cityName)) {
 
-              SearchActivity.this.cityName = charSequence.toString().trim();
-              SearchActivity.this.searchPresenter.search(cityName);
-            }
-          }
-        }));
+                                             SearchActivity.this.cityName = charSequence.toString().trim();
+                                             SearchActivity.this.searchPresenter.search(cityName);
+                                           }
+                                         }
+                                       }));
   }
 
   @Override protected void onSaveInstanceState(final Bundle outState) {
     super.onSaveInstanceState(outState);
 
     if (cacheObservable != null) {
-
       this.compositeSubscription.add(cacheObservable//
-          .compose(SearchActivity.this.<SearchEntity>bindUntilEvent(ActivityEvent.DESTROY))
-          .subscribe(new SimpleObserver<SearchEntity>() {
-            @Override public void onNext(SearchEntity searchEntity) {
-              outState.putSerializable(Constants.CACHE, searchEntity);
-              outState.putSerializable(Constants.CACHE_CITY, SearchActivity.this.cityName);
-            }
-          }));
+                                                    .compose(SearchActivity.this.<SearchEntity>bindUntilEvent(
+                                                        ActivityEvent.DESTROY))
+                                                    .subscribe(new SimpleObserver<SearchEntity>() {
+                                                      @Override public void onNext(SearchEntity searchEntity) {
+                                                        outState.putSerializable(Constants.CACHE, searchEntity);
+                                                        outState.putSerializable(Constants.CACHE_CITY,
+                                                                                 SearchActivity.this.cityName);
+                                                      }
+                                                    }));
     }
   }
 
@@ -176,7 +182,7 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
 
     SupportAnimator revealAnimator =
         ViewAnimationUtils.createCircularReveal(revealFrameLayout.getChildAt(0), 0, bounds.left, 0,
-            Utils.pythagorean(bounds.width(), bounds.height()));
+                                                Utils.pythagorean(bounds.width(), bounds.height()));
     revealAnimator.setDuration(Constants.MILLISECONDS_400);
     revealAnimator.setInterpolator(new AccelerateInterpolator());
     revealAnimator.addListener(new SupportAnimator.SimpleAnimatorListener() {
@@ -200,23 +206,26 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
 
     this.cacheObservable = searchEntityObservable;
 
-    this.compositeSubscription.add(cacheObservable.compose(
-        SearchActivity.this.<SearchEntity>bindUntilEvent(ActivityEvent.DESTROY))
-        .subscribe(new SimpleObserver<SearchEntity>() {
-          @Override public void onNext(SearchEntity searchEntity) {
+    this.compositeSubscription.add(cacheObservable
+                                       .compose(SearchActivity.this.<SearchEntity>bindUntilEvent(ActivityEvent.DESTROY))
+                                       .subscribe(new SimpleObserver<SearchEntity>() {
+                                         @Override public void onNext(SearchEntity searchEntity) {
 
-            SearchActivity.this.weatherTv.setText(
-                Utils.formatTemp(searchEntity.currentTemp) + "  ,  " + searchEntity.weatherText);
+                                           SearchActivity.this.weatherTv.setText(
+                                               Utils.formatTemp(searchEntity.currentTemp)
+                                                   + "  ,  "
+                                                   + searchEntity.weatherText);
 
-            Glide.with(SearchActivity.this)
-                .load(Constants.ICON_URL + searchEntity.weatherCode + ".png")
-                .dontAnimate()
-                .placeholder(R.drawable.holding_icon)
-                .error(R.drawable.holding_icon)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                .into(SearchActivity.this.weatherIv);
-          }
-        }));
+                                           Glide
+                                               .with(SearchActivity.this)
+                                               .load(Constants.ICON_URL + searchEntity.weatherCode + ".png")
+                                               .dontAnimate()
+                                               .placeholder(R.drawable.holding_icon)
+                                               .error(R.drawable.holding_icon)
+                                               .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                                               .into(SearchActivity.this.weatherIv);
+                                         }
+                                       }));
   }
 
   @Override public boolean isContent() {
@@ -245,7 +254,6 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
   }
 
   @Override protected void exit() {
-
     if (rxBus == null) rxBus = MyApplication.get().getRxBus();
     if (rxBus.hasObservers()) rxBus.postEvent(new FinishActEvent());
   }
