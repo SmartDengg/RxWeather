@@ -40,7 +40,6 @@ import com.trello.rxlifecycle.ActivityEvent;
 import java.util.List;
 import rx.Observable;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -82,8 +81,7 @@ public class DetailActivity extends BaseActivity {
   private boolean cancelBack = false;
   private int x;
 
-  public static void navigateToDetail(AppCompatActivity startingActivity, Rect startBounds,
-      Point globalOffset) {
+  public static void navigateToDetail(AppCompatActivity startingActivity, Rect startBounds, Point globalOffset) {
     Intent intent = new Intent(startingActivity, DetailActivity.class);
     intent.putExtra(Constants.POINT, globalOffset).putExtra(Constants.RECT, startBounds);
     startingActivity.startActivity(intent);
@@ -107,28 +105,24 @@ public class DetailActivity extends BaseActivity {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private void getData() {
 
-    this.compositeSubscription.add(
-        MyApplication.get()
-            .getRxBus()
-            .toStickObservable()
-            .filter(new Func1<Object, Boolean>() {
-              @Override public Boolean call(Object object) {
-                return object instanceof MainEntity;
-              }
-            })
-            .cast(MainEntity.class)
-            .compose(DetailActivity.this.<MainEntity>bindUntilEvent(ActivityEvent.DESTROY))
-            .subscribe(new Action1<MainEntity>() {
-              @Override public void call(MainEntity mainEntity) {
+    this.compositeSubscription.add(MyApplication
+                                       .get()
+                                       .getRxBus()
+                                       .toStickObservable()
+                                       .ofType(MainEntity.class)
+                                       .compose(DetailActivity.this.<MainEntity>bindUntilEvent(ActivityEvent.DESTROY))
+                                       .subscribe(new Action1<MainEntity>() {
+                                         @Override public void call(MainEntity mainEntity) {
 
-                DetailActivity.this.mainEntity = mainEntity;
+                                           DetailActivity.this.mainEntity = mainEntity;
 
-                weatherEntity = mainEntity.getWeatherEntity();
-                forecastWeatherEntities = mainEntity.getForecastWeatherEntityList();
-              }
-            }));
+                                           weatherEntity = mainEntity.getWeatherEntity();
+                                           forecastWeatherEntities = mainEntity.getForecastWeatherEntityList();
+                                         }
+                                       }));
   }
 
   @Override protected void initView(Bundle savedInstanceState) {
@@ -157,8 +151,7 @@ public class DetailActivity extends BaseActivity {
 
       DetailActivity.this.initData();
 
-      this.compositeSubscription.add(
-          Observable.just(forecastWeatherEntities).subscribe(detailAdapter));
+      this.compositeSubscription.add(Observable.just(forecastWeatherEntities).subscribe(detailAdapter));
     }
   }
 
@@ -207,7 +200,8 @@ public class DetailActivity extends BaseActivity {
     ViewCompat.setPivotY(animIv, 0.0f);
 
     AnimatorSet set = new AnimatorSet();
-    set.play(ObjectAnimator.ofFloat(this.animIv, View.X, startBounds.left, finalBounds.left))
+    set
+        .play(ObjectAnimator.ofFloat(this.animIv, View.X, startBounds.left, finalBounds.left))
         .with(ObjectAnimator.ofFloat(this.animIv, View.Y, startBounds.top, finalBounds.top))
         .with(ObjectAnimator.ofFloat(this.animIv, View.SCALE_X, scale, 1.0f))
         .with(ObjectAnimator.ofFloat(this.animIv, View.SCALE_Y, scale, 1.0f))
@@ -234,7 +228,8 @@ public class DetailActivity extends BaseActivity {
 
   private void setupAnimIv() {
 
-    Glide.with(DetailActivity.this)
+    Glide
+        .with(DetailActivity.this)
         .load(Constants.ICON_URL + weatherEntity.weatherCode + ".png")
         .dontAnimate()
         .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -248,14 +243,14 @@ public class DetailActivity extends BaseActivity {
     weatherTv.setText(weatherEntity.cityName);
     suggestTv.setText(weatherEntity.drsgDescription);
 
-    Glide.with(MyApplication.get())
+    Glide
+        .with(MyApplication.get())
         .load(Constants.ICON_URL + weatherEntity.weatherCode + ".png")
         .dontAnimate()
         .diskCacheStrategy(DiskCacheStrategy.RESULT)
         .into(weatherIv);
 
-    this.compositeSubscription.add(
-        Observable.just(forecastWeatherEntities).subscribe(detailAdapter));
+    this.compositeSubscription.add(Observable.just(forecastWeatherEntities).subscribe(detailAdapter));
   }
 
   @Override protected void exit() {
@@ -270,7 +265,8 @@ public class DetailActivity extends BaseActivity {
       this.animIv.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
       AnimatorSet set = new AnimatorSet();
-      set.play(ObjectAnimator.ofFloat(this.animIv, View.X, startBounds.left))
+      set
+          .play(ObjectAnimator.ofFloat(this.animIv, View.X, startBounds.left))
           .with(ObjectAnimator.ofFloat(this.animIv, View.Y, startBounds.top))
           .with(ObjectAnimator.ofFloat(this.animIv, View.SCALE_X, scale))
           .with(ObjectAnimator.ofFloat(this.animIv, View.SCALE_Y, scale))
@@ -294,7 +290,8 @@ public class DetailActivity extends BaseActivity {
       set.start();
       DetailActivity.this.animatorSet = set;
     } else {
-      ViewCompat.animate(rootView)
+      ViewCompat
+          .animate(rootView)
           .translationY(Utils.getScreenHeight(DetailActivity.this))
           .setDuration(Constants.MILLISECONDS_300)
           .setInterpolator(new DecelerateInterpolator())

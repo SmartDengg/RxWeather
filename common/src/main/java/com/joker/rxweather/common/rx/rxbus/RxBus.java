@@ -15,6 +15,7 @@ public class RxBus<T, R> {
   private SerializedSubject<T, R> rxStandardBus;
   private SerializedSubject<T, R> rxStickBus;
 
+  @SuppressWarnings("unchecked")
   private RxBus() {
     rxStandardBus = new SerializedSubject(PublishSubject.<T>create());
     rxStickBus = new SerializedSubject(BehaviorSubject.<T>create());

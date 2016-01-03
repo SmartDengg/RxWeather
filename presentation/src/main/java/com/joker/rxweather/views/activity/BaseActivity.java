@@ -10,7 +10,6 @@ import com.joker.rxweather.common.event.FinishActEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 import rx.Subscription;
 import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.subscriptions.Subscriptions;
 
 public abstract class BaseActivity extends RxAppCompatActivity {
@@ -33,22 +32,23 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
   }
 
-  private void SubscribeToFinish() {
+  @SuppressWarnings("unchecked") private void SubscribeToFinish() {
 
     /**
      * https://gist.github.com/benjchristensen/04eef9ca0851f3a5d7bf
      */
-    subscribe = MyApplication.get().getRxBus().toObservable().filter(new Func1<Object, Boolean>() {
-      @Override public Boolean call(Object o) {
-        return o instanceof FinishActEvent;
-      }
-    }).cast(FinishActEvent.class).subscribe(new Action1<FinishActEvent>() {
-      @Override public void call(FinishActEvent finishActEvent) {
+    subscribe = MyApplication
+        .get()
+        .getRxBus()
+        .toObservable()
+        .ofType(FinishActEvent.class)
+        .subscribe(new Action1<FinishActEvent>() {
+          @Override public void call(FinishActEvent finishActEvent) {
 
-        BaseActivity.this.finish();
-        overridePendingTransition(R.anim.anim_none, R.anim.scale_out);
-      }
-    });
+            BaseActivity.this.finish();
+            overridePendingTransition(R.anim.anim_none, R.anim.scale_out);
+          }
+        });
   }
 
   @Override public boolean onKeyDown(int keyCode, KeyEvent event) {

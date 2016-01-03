@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.joker.rxweather.common.Constants;
 
 /**
- * Created by Administrator on 2015/11/5.
+ * Created by Joker on 2015/11/5.
  */
 
 @CoordinatorLayout.DefaultBehavior(ForkView.Behavior.class) public class ForkView extends TextView {
