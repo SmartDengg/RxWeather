@@ -70,7 +70,6 @@
 **ScreenShot**
 -----------------
 
-![](http://i4.tietuku.com/d58cd95029bd664c.gif)
 
 **Developed By**
 -----------------
