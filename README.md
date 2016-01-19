@@ -70,7 +70,7 @@
 **ScreenShot**
 -----------------
 
-![](http://upload-images.jianshu.io/upload_images/268450-d216d61ac89f4948.gif?imageMogr2/auto-orient/strip)
+![](http://i4.tietuku.com/d58cd95029bd664c.gif)
 
 **Developed By**
 -----------------
