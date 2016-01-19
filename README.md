@@ -67,28 +67,26 @@
 最后，搜索功能，输入城市地区的时候，请不要以“市”、“区”结尾，例如：用“北京”代替“北京市”，“朝阳”代替“朝阳区”。
 
 
+**ScreenShot**
+-----------------
 
-
+![](http://upload-images.jianshu.io/upload_images/268450-d216d61ac89f4948.gif?imageMogr2/auto-orient/strip)
 
 **Developed By**
 -----------------
 
 - 小鄧子 - Hi4Joker@gmail.com
 
+[小鄧子的简书](http://www.jianshu.com/users/df40282480b4/latest_articles)
+ 
+[小鄧子的慕课网专题](http://www.imooc.com/myclub/article/uid/2536335)
+
 <a href="http://weibo.com/5367097592/profile?rightmod=1&wvr=6&mod=personinfo">
-  <img alt="Follow me on Weibo" src="http://upload-images.jianshu.io/upload_images/268450-9901d0b9db107f35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
+  <img alt="Follow me on Weibo" src="http://upload-images.jianshu.io/upload_images/268450-50e41e15ac29b776.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 </a>
 
-<a href="http://chuantu.biz/t2/18/1446906962x-1376440133.png">
-  <img alt="Follow me on imooc" src="http://upload-images.jianshu.io/upload_images/268450-c8fc062b6dfcb8fc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
-</a>
-
-<a href="http://www.jianshu.com/users/df40282480b4/latest_articles">
-  <img alt="Follow me on Jianshu" src="http://upload-images.jianshu.io/upload_images/268450-8bd87b592ae0cacd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
-</a>
-
-<a href="http://www.imooc.com/myclub/myquestion/t/ques">
-  <img alt="Follow me on imooc" src="http://upload-images.jianshu.io/upload_images/268450-c5ee5ee33332629f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
+<a href="http://chuantu.biz/t2/18/1446906570x1822611354.png">
+  <img alt="Follow me on Wechat" src="http://upload-images.jianshu.io/upload_images/268450-1025666a7a10ec97.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 </a>
 
 

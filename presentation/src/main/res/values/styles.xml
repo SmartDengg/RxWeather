@@ -9,7 +9,6 @@
     <item name="colorAccent">@color/design_red</item>
   </style>
 
-
   <style name="SplashTheme" parent="AppTheme">
     <item name="android:background">@drawable/splash_background</item>
   </style>

@@ -18,11 +18,9 @@ import com.joker.rxweather.common.Constants;
 /**
  * Created by Joker on 2015/11/5.
  */
-
 @CoordinatorLayout.DefaultBehavior(ForkView.Behavior.class) public class ForkView extends TextView {
 
   private static final String TAG = ForkView.class.getSimpleName();
-  private static final String Y = "Y";
 
   public ForkView(Context context) {
     super(context);
@@ -80,20 +78,18 @@ import com.joker.rxweather.common.Constants;
       out.writeFloat(this.stateToSave);
     }
 
-    public static final Parcelable.Creator<SavedState> CREATOR =
-        new Parcelable.Creator<SavedState>() {
-          public SavedState createFromParcel(Parcel in) {
-            return new SavedState(in);
-          }
+    public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+      public SavedState createFromParcel(Parcel in) {
+        return new SavedState(in);
+      }
 
-          public SavedState[] newArray(int size) {
-            return new SavedState[size];
-          }
-        };
+      public SavedState[] newArray(int size) {
+        return new SavedState[size];
+      }
+    };
   }
 
-  public static class Behavior
-      extends android.support.design.widget.CoordinatorLayout.Behavior<ForkView> {
+  public static class Behavior extends android.support.design.widget.CoordinatorLayout.Behavior<ForkView> {
 
     private boolean isOuting;
 
@@ -101,24 +97,20 @@ import com.joker.rxweather.common.Constants;
 
     }
 
-    @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, ForkView child, View dependency) {
+    @Override public boolean layoutDependsOn(CoordinatorLayout parent, ForkView child, View dependency) {
       return dependency instanceof AppBarLayout;
     }
 
-    @Override public boolean onDependentViewChanged(CoordinatorLayout parent, ForkView child,
-        View dependency) {
+    @Override public boolean onDependentViewChanged(CoordinatorLayout parent, ForkView child, View dependency) {
       if (dependency instanceof AppBarLayout) {
         Behavior.this.updateVisibility(parent, (AppBarLayout) dependency, child);
       }
       return false;
     }
 
-    private boolean updateVisibility(CoordinatorLayout parent, AppBarLayout appBarLayout,
-        ForkView child) {
+    private boolean updateVisibility(CoordinatorLayout parent, AppBarLayout appBarLayout, ForkView child) {
 
-      CoordinatorLayout.LayoutParams layoutParams =
-          (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+      CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
 
       if (layoutParams.getAnchorId() != appBarLayout.getId()) {
         return false;
@@ -129,8 +121,7 @@ import com.joker.rxweather.common.Constants;
       /*other animation......*/
       //ViewCompat.setTranslationY(child, Math.abs(y) - distanceToScroll);
 
-      if (Math.abs(appBarLayout.getY()) >= getMinimumHeightForVisibleOverlappingContent(
-          appBarLayout)) {
+      if (Math.abs(appBarLayout.getY()) >= getMinimumHeightForVisibleOverlappingContent(appBarLayout)) {
 
         if (child.getVisibility() != VISIBLE) {
           this.animateIn(child, distanceToScroll);
@@ -151,8 +142,8 @@ import com.joker.rxweather.common.Constants;
         return minHeight * 2 + topInset;
       } else {
         int childCount = appBarLayout.getChildCount();
-        return childCount >= 1 ? ViewCompat.getMinimumHeight(
-            appBarLayout.getChildAt(childCount - 1)) * 2 + topInset : 0;
+        return childCount >= 1 ? ViewCompat.getMinimumHeight(appBarLayout.getChildAt(childCount - 1)) * 2 + topInset
+                               : 0;
       }
 
      /* try {
@@ -173,7 +164,8 @@ import com.joker.rxweather.common.Constants;
     private void animateIn(ForkView child, float distanceToScroll) {
 
       child.setVisibility(VISIBLE);
-      ViewCompat.animate(child)
+      ViewCompat
+          .animate(child)
           .alpha(1.0f)
           .translationY(distanceToScroll)
           .setDuration(Constants.MILLISECONDS_400)
@@ -184,7 +176,8 @@ import com.joker.rxweather.common.Constants;
 
     private void animateOut(final ForkView child, float distanceToScroll) {
 
-      ViewCompat.animate(child)
+      ViewCompat
+          .animate(child)
           .alpha(0.4f)
           .translationY(distanceToScroll)
           .setDuration(Constants.MILLISECONDS_400)
