@@ -105,8 +105,7 @@ public class DetailActivity extends BaseActivity {
     }
   }
 
-  @SuppressWarnings("unchecked")
-  private void getData() {
+  @SuppressWarnings("unchecked") private void getData() {
 
     this.compositeSubscription.add(MyApplication
                                        .get()
