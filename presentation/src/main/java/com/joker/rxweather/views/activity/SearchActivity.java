@@ -135,11 +135,6 @@ public class SearchActivity extends BaseActivity implements SearchView<Observabl
                                            return Observable.just(charSequence);
                                          }
                                        })
-                                       .switchMap(new Func1<CharSequence, Observable<CharSequence>>() {
-                                         @Override public Observable<CharSequence> call(CharSequence charSequence) {
-                                           return Observable.just(charSequence);
-                                         }
-                                       })
                                        .observeOn(AndroidSchedulers.mainThread())
                                        .compose(SearchActivity.this.<CharSequence>bindUntilEvent(ActivityEvent.DESTROY))
                                        .subscribe(new SimpleObserver<CharSequence>() {

@@ -27,7 +27,6 @@
 ![Clean-Architecture](http://upload-images.jianshu.io/upload_images/268450-5e567202af6e2671.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-
 **Project Structure**
 -----------------
 
