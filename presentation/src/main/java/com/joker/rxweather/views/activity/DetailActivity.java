@@ -110,8 +110,7 @@ public class DetailActivity extends BaseActivity {
     this.compositeSubscription.add(MyApplication
                                        .get()
                                        .getRxBus()
-                                       .toStickObservable()
-                                       .ofType(MainEntity.class)
+                                       .toStickObservable(MainEntity.class)
                                        .compose(DetailActivity.this.<MainEntity>bindUntilEvent(ActivityEvent.DESTROY))
                                        .subscribe(new Action1<MainEntity>() {
                                          @Override public void call(MainEntity mainEntity) {

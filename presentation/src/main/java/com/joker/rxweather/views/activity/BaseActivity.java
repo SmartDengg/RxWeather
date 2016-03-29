@@ -40,8 +40,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     subscribe = MyApplication
         .get()
         .getRxBus()
-        .toObservable()
-        .ofType(FinishActEvent.class)
+        .toObservable(FinishActEvent.class)
         .subscribe(new Action1<FinishActEvent>() {
           @Override public void call(FinishActEvent finishActEvent) {
 

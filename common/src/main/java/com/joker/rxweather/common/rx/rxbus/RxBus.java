@@ -8,45 +8,44 @@ import rx.subjects.SerializedSubject;
 /**
  * Created by Joker on 2015/10/31.
  */
-public class RxBus<T, R> {
+public class RxBus {
 
   private static final String TAG = RxBus.class.getSimpleName();
 
-  private SerializedSubject<T, R> rxStandardBus;
-  private SerializedSubject<T, R> rxStickBus;
+  private SerializedSubject<Object, Object> rxBus;
+  private SerializedSubject<Object, Object> rxStickBus;
 
-  @SuppressWarnings("unchecked")
-  private RxBus() {
-    rxStandardBus = new SerializedSubject(PublishSubject.<T>create());
-    rxStickBus = new SerializedSubject(BehaviorSubject.<T>create());
+  @SuppressWarnings("unchecked") private RxBus() {
+    rxBus = new SerializedSubject(PublishSubject.create());
+    rxStickBus = new SerializedSubject(BehaviorSubject.create());
   }
 
   private static class SingletonHolder {
-    private static RxBus<Object, Object> instance = new RxBus<>();
+    private static RxBus instance = new RxBus();
   }
 
   public static RxBus getInstance() {
     return SingletonHolder.instance;
   }
 
-  public void postEvent(T event) {
-    rxStandardBus.onNext(event);
+  public void postEvent(Object event) {
+    rxBus.onNext(event);
   }
 
-  public void postStickEvent(T event) {
+  public void postStickEvent(Object event) {
     rxStickBus.onNext(event);
   }
 
-  public Observable<R> toObservable() {
-    return rxStandardBus.asObservable().onBackpressureBuffer();
+  public <T> Observable<T> toObservable(Class<T> type) {
+    return rxBus.asObservable().ofType(type).onBackpressureBuffer();
   }
 
-  public Observable<R> toStickObservable() {
-    return rxStickBus.asObservable().share().onBackpressureBuffer();
+  public <T> Observable<T> toStickObservable(Class<T> type) {
+    return rxStickBus.asObservable().ofType(type).onBackpressureBuffer();
   }
 
   public boolean hasObservers() {
-    return rxStandardBus.hasObservers();
+    return rxBus.hasObservers();
   }
 
   public boolean hasStickObservers() {
