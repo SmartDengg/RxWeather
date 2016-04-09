@@ -10,45 +10,48 @@ import rx.subjects.SerializedSubject;
  */
 public class RxBus {
 
-  private static final String TAG = RxBus.class.getSimpleName();
+    private static final String TAG = RxBus.class.getSimpleName();
 
-  private SerializedSubject<Object, Object> rxBus;
-  private SerializedSubject<Object, Object> rxStickBus;
+    private SerializedSubject<Object, Object> rxBus;
+    private SerializedSubject<Object, Object> rxStickBus;
 
-  @SuppressWarnings("unchecked") private RxBus() {
-    rxBus = new SerializedSubject(PublishSubject.create());
-    rxStickBus = new SerializedSubject(BehaviorSubject.create());
-  }
+    @SuppressWarnings("unchecked")
+    private RxBus() {
+        rxBus = new SerializedSubject(PublishSubject.create());
+        rxStickBus = new SerializedSubject(BehaviorSubject.create());
+    }
 
-  private static class SingletonHolder {
-    private static RxBus instance = new RxBus();
-  }
+    private static class SingletonHolder {
 
-  public static RxBus getInstance() {
-    return SingletonHolder.instance;
-  }
+        private static RxBus instance = new RxBus();
+    }
 
-  public void postEvent(Object event) {
-    rxBus.onNext(event);
-  }
+    public static RxBus getInstance() {
+        return SingletonHolder.instance;
+    }
 
-  public void postStickEvent(Object event) {
-    rxStickBus.onNext(event);
-  }
+    public void postEvent(Object event) {
+        if (this.hasObservers()) rxBus.onNext(event);
+    }
 
-  public <T> Observable<T> toObservable(Class<T> type) {
-    return rxBus.asObservable().ofType(type).onBackpressureBuffer();
-  }
+    public void postStickEvent(Object event) {
+        rxStickBus.onNext(event);
+    }
 
-  public <T> Observable<T> toStickObservable(Class<T> type) {
-    return rxStickBus.asObservable().ofType(type).onBackpressureBuffer();
-  }
+    public <T> Observable<T> toObservable(Class<T> type) {
+        return rxBus.asObservable().ofType(type).onBackpressureBuffer();
+    }
 
-  public boolean hasObservers() {
-    return rxBus.hasObservers();
-  }
+    public <T> Observable<T> toStickObservable(Class<T> type) {
+        return rxStickBus.asObservable().ofType(type).onBackpressureBuffer();
+    }
 
-  public boolean hasStickObservers() {
-    return rxStickBus.hasObservers();
-  }
+    private boolean hasObservers() {
+        return rxBus.hasObservers();
+    }
+
+    @Deprecated
+    public boolean hasStickObservers() {
+        return rxStickBus.hasObservers();
+    }
 }
