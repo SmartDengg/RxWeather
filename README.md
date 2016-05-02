@@ -84,10 +84,6 @@
   <img alt="Follow me on Weibo" src="http://upload-images.jianshu.io/upload_images/268450-50e41e15ac29b776.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 </a>
 
-<a href="http://chuantu.biz/t2/18/1446906570x1822611354.png">
-  <img alt="Follow me on Wechat" src="http://upload-images.jianshu.io/upload_images/268450-1025666a7a10ec97.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
-</a>
-
 
 **Acknowledgments**
 -----------------
