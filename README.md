@@ -2,6 +2,8 @@
 
 ![](./images/icon.png)
 
+##@Deprecated
+
 **简介**
 -----------------
 这是一个简单的天气预报项目，目的是用来演示如何使用RxJava构造一个清晰的Android应用框架，并且加入了Rxbus，为了节约时间成本，界面并没有经过特别的设计，配色和控件的摆放也没有遵循[Material Design](http://www.google.com/design/spec/material-design/introduction.html)设计规范，所以，它并不具备一款Android App所应该具备的素质，为此，我深感抱歉和遗憾。
@@ -80,7 +82,7 @@
   <img alt="Follow me on Weibo" src="http://upload-images.jianshu.io/upload_images/268450-50e41e15ac29b776.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" />
 </a>
 
-**参考自**
+**参考**
 -----------------
 
 - [Material-Movies](https://github.com/saulmm/Material-Movies) - Saul Molinero
